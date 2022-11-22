@@ -32,11 +32,17 @@ export default function Calendar({ date }) {
     "Декабрь",
   ];
 
+  const firstDayOfMonth = new Date(currentYear, currentMonth).getDay(); // получение первого дня месяца
+
   const lastDateOfMonth = new Date(currentYear, currentMonth + 1, 0).getDate(); // колличество дней в этом месяце
 
-  const lastDateOfLastMonth = new Date(currentYear, currentMonth, 0).getDate(); // последняя дата предыдущего месяца
+  const lastDayOfMonth = new Date(
+    currentYear,
+    currentMonth,
+    lastDateOfMonth
+  ).getDay(); // получение последнего дня месяца
 
-  const firstDayOfMonth = new Date(currentYear, currentMonth, 0).getDay(); // получение первого дня месяца
+  const lastDateOfLastMonth = new Date(currentYear, currentMonth, 0).getDate(); // последняя дата предыдущего месяца
 
   function renderTableBody() {
     const tdElements = [];
@@ -45,7 +51,7 @@ export default function Calendar({ date }) {
     let temporaryСontainer = [];
 
     // создание последних дней предыдущего месяца
-    for (let i = firstDayOfMonth; i > 0; i--) {
+    for (let i = firstDayOfMonth - 1; i > 0; i--) {
       tdElements.push(
         <td className="ui-datepicker-other-month">
           {lastDateOfLastMonth - i + 1}
@@ -64,6 +70,13 @@ export default function Calendar({ date }) {
       tdElements.push(<td className={configClass}>{i}</td>);
     }
 
+    // создание первых дней следующего месяца
+    for (let i = lastDayOfMonth; i < 7; i++) {
+      tdElements.push(
+        <td className="ui-datepicker-other-month">{i - lastDayOfMonth + 1}</td>
+      );
+    }
+
     for (let i = 0; i < tdElements.length; i++) {
       temporaryСontainer.push(tdElements[i]);
 
@@ -72,19 +85,8 @@ export default function Calendar({ date }) {
         temporaryСontainer = [];
       }
 
-      // создание первых дней следующего месяца
       if (i === tdElements.length - 1) {
-        if (temporaryСontainer.length < 7) {
-          let num = 1;
-          for (let i = temporaryСontainer.length; i < 7; i++) {
-            temporaryСontainer.push(
-              <td className="ui-datepicker-other-month">{num}</td>
-            );
-            num += 1;
-          }
-        }
         trElements.push(<tr>{temporaryСontainer}</tr>);
-        temporaryСontainer = [];
       }
     }
 
