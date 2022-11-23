@@ -32,7 +32,7 @@ export default function Calendar({ date }) {
     "Декабрь",
   ];
 
-  const firstDayOfMonth = new Date(currentYear, currentMonth).getDay(); // получение первого дня месяца
+  const firstDayOfMonth = new Date(currentYear, currentMonth, 0).getDay(); // получение первого дня месяца
 
   const lastDateOfMonth = new Date(currentYear, currentMonth + 1, 0).getDate(); // колличество дней в этом месяце
 
@@ -51,7 +51,7 @@ export default function Calendar({ date }) {
     let temporaryСontainer = [];
 
     // создание последних дней предыдущего месяца
-    for (let i = firstDayOfMonth - 1; i > 0; i--) {
+    for (let i = firstDayOfMonth; i > 0; i--) {
       tdElements.push(
         <td className="ui-datepicker-other-month">
           {lastDateOfLastMonth - i + 1}
